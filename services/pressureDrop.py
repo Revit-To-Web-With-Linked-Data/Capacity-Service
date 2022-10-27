@@ -135,6 +135,7 @@ def pipes(graph):
   }   
 
   for item1 in graph['@graph']:
+    # print(item1['@type'])
   #Calculate pressure drop for each pipe and duct and add it to object
     if (item1['@type'] =='fso:Pipe' or item1['@type'] =='fso:Duct'):
         result=pipeFluids(item1["@id"], item1["fpo:temperature"], item1["flowType"], item1["fpo:length"], item1["fpo:roughness"], item1["fpo:velocity"], item1["fpo:outerDiameter"])
@@ -168,10 +169,14 @@ def TeeIdentifier (Tees):
     outletArray=[]
     for port in component["hasPort"]:
       directionVectorArray = []
+      #print(port["flowDirection"])
       if port["flowDirection"] == "In":
         inletArray.append(port["hasFlowDirectionVectorZ"])
       if port["flowDirection"] == "Out":
         outletArray.append(port["hasFlowDirectionVectorZ"])
+    
+    # print("inletArray:", len(inletArray))
+    # print("outletAray:", len(outletArray))
     if len(inletArray) == 2:
       #IF 2 Out flowDirections then we have either fordeling or afgrening
       z11 = inletArray[0][0]
@@ -185,23 +190,27 @@ def TeeIdentifier (Tees):
       z3 =z13 + z23
       if z1 ==0 and z2 ==0 and z3 ==0:
         if port["flowType"] =="Water":
-          #print("Sammenlob Water")
+          if component["@id"] == "inst:98e9914f-25c6-4c43-a0fb-912eba89c13d-0019da5c":
+            print("Sammenlob Water")
           sammenlobWaterPressureDrops = SammenlobWaterPressureCalculation(component)
           for i in sammenlobWaterPressureDrops:
             pressureDrops.append(i)        
         else:
-          #print("Sammenlob Air")
+          if component["@id"] == "inst:98e9914f-25c6-4c43-a0fb-912eba89c13d-0019da5c":
+            print("Sammenlob Air")
           sammenlobAirPressureDrops = SammenlobAirPressureCalculation(component)
           for i in sammenlobAirPressureDrops:
             pressureDrops.append(i)        
       else:
         if port["flowType"] =="Water":
-          #print("Tillob Water")
+          if component["@id"] == "inst:98e9914f-25c6-4c43-a0fb-912eba89c13d-0019da5c":
+            print("Tillob Water")
           tillobWaterPressureDrops = TillobWaterPressureCalculation(component)
           for i in tillobWaterPressureDrops:
             pressureDrops.append(i)
         if port["flowType"] =="Air":
-          #print("Tillob Air")
+          if component["@id"] == "inst:98e9914f-25c6-4c43-a0fb-912eba89c13d-0019da5c":
+            print("Tillob Air")
           tillobAirPressureDrops = TillobAirPressureCalculation(component)
           for i in tillobAirPressureDrops:
             pressureDrops.append(i)
@@ -221,23 +230,27 @@ def TeeIdentifier (Tees):
       z3 =z13 + z23
       if z1 ==0 and z2 ==0 and z3 ==0:
         if port["flowType"] =="Water":
-          #print("Fordeling Water")
+          if component["@id"] == "inst:98e9914f-25c6-4c43-a0fb-912eba89c13d-0019da5c":
+            print("Fordeling Water")
           fordelingWaterPressureDrops = FordelingWaterPressureCalculation(component)
           for i in fordelingWaterPressureDrops:
             pressureDrops.append(i)
         else:
-          #print("Fordeling Air")
+          if component["@id"] == "inst:98e9914f-25c6-4c43-a0fb-912eba89c13d-0019da5c":
+            print("Fordeling Air")
           fordelingAirPressureDrops= FordelingAirPressureCalculation(component)
           for i in fordelingAirPressureDrops:
             pressureDrops.append(i)          
       else:
         if port["flowType"] =="Water":
-          #print("Afgrening Water")
+          if component["@id"] == "inst:98e9914f-25c6-4c43-a0fb-912eba89c13d-0019da5c":
+            print("Afgrening Water")
           afgreningWaterPressureDrops = AfgreningWaterPressureCalculation(component)
           for i in afgreningWaterPressureDrops:
               pressureDrops.append(i)
         if port["flowType"] =="Air":
-          #print("Afgrening Air") 
+          if component["@id"] == "inst:98e9914f-25c6-4c43-a0fb-912eba89c13d-0019da5c":
+            print("Afgrening Air") 
           afgreningAirPressureDrops = AfgreningAirPressureCalculation(component)
           for i in afgreningAirPressureDrops:
               pressureDrops.append(i)

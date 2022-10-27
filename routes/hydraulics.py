@@ -11,22 +11,14 @@ import json
 async def root():
     return {"Message": "Frontpage"}
 
-@router.post("/tees")
+@router.post("/pressureDropTees")
 async def calculate_pipes(request: Request):
-    sb =""
     data = await request.body()
-    pipeGraph = pressureDrop.tees(json.loads(data))
-    #sb = json.dumps(data)
-    #sb = request.body()
-    #return {await request.body()}
-    return json.dumps(pipeGraph)
+    teeGraph = pressureDrop.tees(json.loads(data))
+    return json.dumps(teeGraph)
 
-@router.post("/pipes")
+@router.post("/pressureDropRest")
 async def calculate_pipes(request: Request):
-    sb =""
     data = await request.body()
     pipeGraph = pressureDrop.pipes(json.loads(data))
-    #sb = json.dumps(data)
-    #sb = request.body()
-    #return {await request.body()}
-    return json.dumps(pipeGraph)
+    return json.dumps(pipeGraph) 
