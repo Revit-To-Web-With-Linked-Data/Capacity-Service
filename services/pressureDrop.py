@@ -13,18 +13,18 @@ def tees(graph):
   "@graph" : [ ],
    "@context": {
 
-        "fpo:value": {
-            "@id": "http://w3id.org/fpo#value",
+        "fpo:hasValue": {
+            "@id": "https://w3id.org/fpo#hasValue",
             "@type": "http://www.w3.org/2001/XMLSchema#double"
         },
-        "pressureDrop": {
-            "@id": "http://w3id.org/fpo#pressureDrop",
+        "hasPressureDrop": {
+            "@id": "https://w3id.org/fpo#hasPressureDrop",
             "@type": "@id"
         },
         "ex": "https://example.com/ex#",
-        "fso": "http://w3id.org/fso#",
+        "fso": "https://w3id.org/fso#",
         "xsd": "http://www.w3.org/2001/XMLSchema#",
-        "fpo": "http://w3id.org/fpo#",
+        "fpo": "https://w3id.org/fpo#",
         "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
         "inst": "https://example.com/inst#"
     }
@@ -53,45 +53,45 @@ def tees(graph):
               directionVectorArray = []
               for directionVector in item2["hasFlowDirectionVectorZ"]:
                 directionVectorArray.append(float(directionVector))
-              flowDirection = item2["flowDirection"]
-              flowType = item2["flowType"]
-              temperature = item2["fpo:temperature"]
-              velocity = item2["fpo:velocity"]
-              flowRate = item2["fpo:flowRate"]
+              flowDirection = item2["hasFlowDirection"]
+              flowType = item2["hasFlowType"]
+              temperature = item2["fpo:hasTemperature"]
+              velocity = item2["fpo:hasVelocity"]
+              flowRate = item2["fpo:hasFlowRate"]
 
-              if "fpo:outerDiameter" in item2:
-                outerDiameter =item2["fpo:outerDiameter"]
-                crossSectionalArea =item2["fpo:crossSectionalArea"]
+              if "fpo:hasOuterDiameter" in item2:
+                outerDiameter =item2["fpo:hasOuterDiameter"]
+                crossSectionalArea =item2["fpo:hasCrossSectionalArea"]
 
                 portArray.append({
                 "@id": item2["@id"],
-                "flowDirection": flowDirection,
-                "flowType": flowType,
-                "fpo:temperature": temperature,
-                "fpo:velocity": velocity,
+                "hasFlowDirection": flowDirection,
+                "hasFlowType": flowType,
+                "fpo:hasTemperature": temperature,
+                "fpo:hasVelocity": velocity,
                 "hasFlowDirectionVectorZ": directionVectorArray,
-                "fpo:flowRate": flowRate,
-                "fpo:outerDiameter": outerDiameter,
-                "fpo:crossSectionalArea": crossSectionalArea
+                "fpo:hasFlowRate": flowRate,
+                "fpo:hasOuterDiameter": outerDiameter,
+                "fpo:hasCrossSectionalArea": crossSectionalArea
 
               })
 
-              if "fpo:width" in item2:
-                width =item2["fpo:width"]
-                height =item2["fpo:height"]
-                crossSectionalArea =item2["fpo:crossSectionalArea"]
+              if "fpo:hasWidth" in item2:
+                width =item2["fpo:hasWidth"]
+                height =item2["fpo:hasHeight"]
+                crossSectionalArea =item2["fpo:hasCrossSectionalArea"]
 
                 portArray.append({
                 "@id": item2["@id"],
-                "flowDirection": flowDirection,
-                "flowType": flowType,
-                "fpo:temperature": temperature,
-                "fpo:velocity": velocity,
+                "hasFlowDirection": flowDirection,
+                "hasFlowType": flowType,
+                "fpo:hasTemperature": temperature,
+                "fpo:hasVelocity": velocity,
                 "hasFlowDirectionVectorZ": directionVectorArray,
-                "fpo:flowRate": flowRate,
-                "fpo:width": width,
-                "fpo:height": height,
-                "fpo:crossSectionalArea": crossSectionalArea
+                "fpo:hasFlowRate": flowRate,
+                "fpo:hasWidth": width,
+                "fpo:hasHeight": height,
+                "fpo:hasCrossSectionalArea": crossSectionalArea
                 })
 
 
@@ -110,23 +110,24 @@ def tees(graph):
 
 
 def pipes(graph): 
+  print(graph)
   ###Extracting data at component level and send it to fluid component
   distributionComponents ={
   "@graph" : [ ],
    "@context": {
 
-        "fpo:value": {
-            "@id": "http://w3id.org/fpo#value",
+        "fpo:hasValue": {
+            "@id": "https://w3id.org/fpo#hasValue",
             "@type": "http://www.w3.org/2001/XMLSchema#double"
         },
-        "pressureDrop": {
-            "@id": "http://w3id.org/fpo#pressureDrop",
+        "hasPressureDrop": {
+            "@id": "https://w3id.org/fpo#hasPressureDrop",
             "@type": "@id"
         },
         "ex": "https://example.com/ex#",
-        "fso": "http://w3id.org/fso#",
+        "fso": "https://w3id.org/fso#",
         "xsd": "http://www.w3.org/2001/XMLSchema#",
-        "fpo": "http://w3id.org/fpo#",
+        "fpo": "https://w3id.org/fpo#",
         "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
         "inst": "https://example.com/inst#"
     }
@@ -137,25 +138,23 @@ def pipes(graph):
   for item1 in graph['@graph']:
     # print(item1['@type'])
   #Calculate pressure drop for each pipe and duct and add it to object
-    if (item1['@type'] =='fso:Pipe' or item1['@type'] =='fso:Duct'):
-        result=pipeFluids(item1["@id"], item1["fpo:temperature"], item1["flowType"], item1["fpo:length"], item1["fpo:roughness"], item1["fpo:velocity"], item1["fpo:outerDiameter"])
+    if (item1['@type'] =='Pipe' or item1['@type'] =='fso:Duct'):
+        result=pipeFluids(item1["@id"], item1["fpo:hasTemperature"], item1["hasFlowType"], item1["fpo:hasLength"], item1["fpo:hasRoughness"], item1["fpo:hasVelocity"], item1["fpo:hasOuterDiameter"])
 
         distributionComponents["@graph"].extend(result)
   
   # Calculate pressure drop for each elbow and add it to object
-    if (item1['@type'] =='fso:Elbow'):
-        result=ElbowFluids(item1["@id"], item1["fpo:temperature"], item1["flowType"], item1["fpo:angle"], item1["fpo:roughness"], item1["fpo:velocity"], item1["fpo:outerDiameter"])
+    if (item1['@type'] =='Elbow'):
+        result=ElbowFluids(item1["@id"], item1["fpo:hasTemperature"], item1["hasFlowType"], item1["fpo:hasAngle"], item1["fpo:hasRoughness"], item1["fpo:hasVelocity"], item1["fpo:hasOuterDiameter"])
 
         distributionComponents["@graph"].extend(result)
 
   #Calculate pressure drop for each transition and add it to object
-    if (item1['@type'] =='fso:Transition'):
-        result=TransitionFluids(item1["@id"], item1["fpo:temperature"], item1["flowType"], item1["fpo:velocity"], item1["fpo:outerDiameter"],item1["fpo:innerDiameter"], item1["hasSystem"], item1["fpo:length"])
+    if (item1['@type'] =='Transition'):
+        result=TransitionFluids(item1["@id"], item1["fpo:hasTemperature"], item1["hasFlowType"], item1["fpo:hasVelocity"], item1["fpo:hasOuterDiameter"],item1["fpo:hasInnerDiameter"], item1["hasSystem"], item1["fpo:hasLength"])
 
         distributionComponents["@graph"].extend(result)
-
-  
-          
+        
   return distributionComponents
 
 
@@ -169,10 +168,10 @@ def TeeIdentifier (Tees):
     outletArray=[]
     for port in component["hasPort"]:
       directionVectorArray = []
-      #print(port["flowDirection"])
-      if port["flowDirection"] == "In":
+      #print(port["hasFlowDirection"])
+      if port["hasFlowDirection"] == "In":
         inletArray.append(port["hasFlowDirectionVectorZ"])
-      if port["flowDirection"] == "Out":
+      if port["hasFlowDirection"] == "Out":
         outletArray.append(port["hasFlowDirectionVectorZ"])
     
     # print("inletArray:", len(inletArray))
@@ -189,7 +188,7 @@ def TeeIdentifier (Tees):
       z2 =z12 + z22
       z3 =z13 + z23
       if z1 ==0 and z2 ==0 and z3 ==0:
-        if port["flowType"] =="Water":
+        if port["hasFlowType"] =="Water":
           if component["@id"] == "inst:98e9914f-25c6-4c43-a0fb-912eba89c13d-0019da5c":
             print("Sammenlob Water")
           sammenlobWaterPressureDrops = SammenlobWaterPressureCalculation(component)
@@ -202,13 +201,13 @@ def TeeIdentifier (Tees):
           for i in sammenlobAirPressureDrops:
             pressureDrops.append(i)        
       else:
-        if port["flowType"] =="Water":
+        if port["hasFlowType"] =="Water":
           if component["@id"] == "inst:98e9914f-25c6-4c43-a0fb-912eba89c13d-0019da5c":
             print("Tillob Water")
           tillobWaterPressureDrops = TillobWaterPressureCalculation(component)
           for i in tillobWaterPressureDrops:
             pressureDrops.append(i)
-        if port["flowType"] =="Air":
+        if port["hasFlowType"] =="Air":
           if component["@id"] == "inst:98e9914f-25c6-4c43-a0fb-912eba89c13d-0019da5c":
             print("Tillob Air")
           tillobAirPressureDrops = TillobAirPressureCalculation(component)
@@ -229,7 +228,7 @@ def TeeIdentifier (Tees):
       z2 =z12 + z22
       z3 =z13 + z23
       if z1 ==0 and z2 ==0 and z3 ==0:
-        if port["flowType"] =="Water":
+        if port["hasFlowType"] =="Water":
           if component["@id"] == "inst:98e9914f-25c6-4c43-a0fb-912eba89c13d-0019da5c":
             print("Fordeling Water")
           fordelingWaterPressureDrops = FordelingWaterPressureCalculation(component)
@@ -242,13 +241,13 @@ def TeeIdentifier (Tees):
           for i in fordelingAirPressureDrops:
             pressureDrops.append(i)          
       else:
-        if port["flowType"] =="Water":
+        if port["hasFlowType"] =="Water":
           if component["@id"] == "inst:98e9914f-25c6-4c43-a0fb-912eba89c13d-0019da5c":
             print("Afgrening Water")
           afgreningWaterPressureDrops = AfgreningWaterPressureCalculation(component)
           for i in afgreningWaterPressureDrops:
               pressureDrops.append(i)
-        if port["flowType"] =="Air":
+        if port["hasFlowType"] =="Air":
           if component["@id"] == "inst:98e9914f-25c6-4c43-a0fb-912eba89c13d-0019da5c":
             print("Afgrening Air") 
           afgreningAirPressureDrops = AfgreningAirPressureCalculation(component)
@@ -263,23 +262,23 @@ def SammenlobAirPressureCalculation(component):
   outletPort ={}
   
   for port in component["hasPort"]:
-    if port["flowDirection"] == "Out":
+    if port["hasFlowDirection"] == "Out":
       outletPort = port
       SammenlobArray = []
       pressureDropMaxArray = []
       for newPort in component["hasPort"]:
-        if newPort["flowDirection"] == "In":
+        if newPort["hasFlowDirection"] == "In":
           inletPort = newPort
 
-          q = outletPort["fpo:flowRate"]
-          q2= inletPort["fpo:flowRate"]
-          v2 = inletPort["fpo:velocity"]
+          q = outletPort["fpo:hasFlowRate"]
+          q2= inletPort["fpo:hasFlowRate"]
+          v2 = inletPort["fpo:hasVelocity"]
           
           xp = [0.1, 0.2 , 0.3, 0.4 , 0.5, 0.6, 0.7, 0.8, 0.9]
           fp = [54.54, 11.83, 4.60, 2.47, 1.57, 1.13, 0.95, 0.08, 1.24]
           theta = np.interp(q2/q, xp, fp)
 
-          fluidTemperature = outletPort["fpo:temperature"] # *C
+          fluidTemperature = outletPort["fpo:hasTemperature"] # *C
           fluid_vapour = Fluid(PureFluids.Air)
           fluid_vapour.update(Input.Pressure.with_value(101325), Input.Temperature.with_value(273.15+fluidTemperature)) 
           density = fluid_vapour.density #kg/m3
@@ -291,11 +290,11 @@ def SammenlobAirPressureCalculation(component):
       pressureDropID = "inst:"+str(uuid.uuid4())
       portData = {
       "@id" : outletPort["@id"],
-      "pressureDrop" : pressureDropID
+      "hasPressureDrop" : pressureDropID
       }
       pressureDropData={ 
         "@id" : pressureDropID,
-      "fpo:value" : max(pressureDropMaxArray)
+      "fpo:hasValue" : max(pressureDropMaxArray)
       }
       SammenlobArray.append(portData)
       SammenlobArray.append(pressureDropData)
@@ -309,12 +308,12 @@ def SammenlobWaterPressureCalculation(component):
   outletPort ={}
   
   for port in component["hasPort"]:
-    if port["flowDirection"] == "Out":
+    if port["hasFlowDirection"] == "Out":
       outletPort = port
       SammenlobArray = []
       pressureDropMaxArray = []
       for newPort in component["hasPort"]:
-        if newPort["flowDirection"] == "In":
+        if newPort["hasFlowDirection"] == "In":
           inletPort = newPort
           z11 = inletPort["hasFlowDirectionVectorZ"][0]
           z12 = inletPort["hasFlowDirectionVectorZ"][1]
@@ -326,11 +325,11 @@ def SammenlobWaterPressureCalculation(component):
           z2 =z12 + z22
           z3 =z13 + z23
 
-          q = outletPort["fpo:flowRate"]
-          q2= inletPort["fpo:flowRate"]
-          d = outletPort["fpo:outerDiameter"]
-          d2= inletPort["fpo:outerDiameter"]
-          v2 = inletPort["fpo:velocity"]
+          q = outletPort["fpo:hasFlowRate"]
+          q2= inletPort["fpo:hasFlowRate"]
+          d = outletPort["fpo:hasOuterDiameter"]
+          d2= inletPort["fpo:hasOuterDiameter"]
+          v2 = inletPort["fpo:hasVelocity"]
           
           if round(d2/d,1) <= 0.5:
             xp = [0.3, 0.5, 0.7]
@@ -357,7 +356,7 @@ def SammenlobWaterPressureCalculation(component):
             fp = [15, 5, 3]
             theta = np.interp(q2/q, xp, fp)
 
-          fluidTemperature = outletPort["fpo:temperature"] # *C
+          fluidTemperature = outletPort["fpo:hasTemperature"] # *C
           fluid_vapour = Fluid(PureFluids.Water)
           fluid_vapour.update(Input.Pressure.with_value(101325), Input.Temperature.with_value(273.15+fluidTemperature)) 
           density = fluid_vapour.density #kg/m3
@@ -369,28 +368,27 @@ def SammenlobWaterPressureCalculation(component):
       pressureDropID = "inst:"+str(uuid.uuid4())
       portData = {
       "@id" : outletPort["@id"],
-      "pressureDrop" : pressureDropID
+      "hasPressureDrop" : pressureDropID
       }
       pressureDropData={ 
         "@id" : pressureDropID,
-      "fpo:value" : max(pressureDropMaxArray)
+      "fpo:hasValue" : max(pressureDropMaxArray)
       }
       SammenlobArray.append(portData)
       SammenlobArray.append(pressureDropData)
 
       return SammenlobArray
-          
 def TillobAirPressureCalculation(component):
   inletPort ={}
   outletPort ={}
   
   for port in component["hasPort"]:
-    if port["flowDirection"] == "Out":
+    if port["hasFlowDirection"] == "Out":
       outletPort = port
       TillobArray = []
       pressureDropMaxArray = []
       for newPort in component["hasPort"]:
-        if newPort["flowDirection"] == "In":
+        if newPort["hasFlowDirection"] == "In":
           inletPort = newPort
           z11 = inletPort["hasFlowDirectionVectorZ"][0]
           z12 = inletPort["hasFlowDirectionVectorZ"][1]
@@ -404,15 +402,15 @@ def TillobAirPressureCalculation(component):
 
           #PARRALEL PORT
           if z1 ==0 and z2 ==0 and z3 ==0:
-            q = outletPort["fpo:flowRate"]
-            q1= inletPort["fpo:flowRate"]
-            v1 = inletPort["fpo:velocity"]
+            q = outletPort["fpo:hasFlowRate"]
+            q1= inletPort["fpo:hasFlowRate"]
+            v1 = inletPort["fpo:hasVelocity"]
             
             xp = [0.1, 0.2 , 0.3, 0.4 , 0.5, 0.6, 0.7, 0.8, 0.9]
             fp = [237.9, 37.35, 12.88, 5.92, 3.08, 1.68 ,0.88 ,0.39 ,0.07]
             theta = np.interp(q1/q, xp, fp)
 
-            fluidTemperature = outletPort["fpo:temperature"] # *C
+            fluidTemperature = outletPort["fpo:hasTemperature"] # *C
             fluid_vapour = Fluid(PureFluids.Air)
             fluid_vapour.update(Input.Pressure.with_value(101325), Input.Temperature.with_value(273.15+fluidTemperature)) 
             density = fluid_vapour.density #kg/m3
@@ -422,15 +420,15 @@ def TillobAirPressureCalculation(component):
            
           #ORTHOGONAL PORT
           if z1 !=0 or z2 !=0 or z3 !=0:
-            q = outletPort["fpo:flowRate"]
-            q2= inletPort["fpo:flowRate"]
-            v2 = inletPort["fpo:velocity"]
+            q = outletPort["fpo:hasFlowRate"]
+            q2= inletPort["fpo:hasFlowRate"]
+            v2 = inletPort["fpo:hasVelocity"]
             
             xp = [0.1, 0.2 , 0.3, 0.4 , 0.5, 0.6, 0.7, 0.8, 0.9]
             fp = [-39.19, -2.55, 1.76, 2.43, 2.35, 2.12, 1.9, 1.81, 2.3]
             theta = np.interp(q2/q, xp, fp)
 
-            fluidTemperature = outletPort["fpo:temperature"] # *C
+            fluidTemperature = outletPort["fpo:hasTemperature"] # *C
             fluid_vapour = Fluid(PureFluids.Air)
             fluid_vapour.update(Input.Pressure.with_value(101325), Input.Temperature.with_value(273.15+fluidTemperature)) 
             density = fluid_vapour.density #kg/m3
@@ -442,29 +440,27 @@ def TillobAirPressureCalculation(component):
       pressureDropID = "inst:"+str(uuid.uuid4())
       portData = {
       "@id" : outletPort["@id"],
-      "pressureDrop" : pressureDropID
+      "hasPressureDrop" : pressureDropID
       }
       pressureDropData={ 
         "@id" : pressureDropID,
-      "fpo:value" : max(pressureDropMaxArray)
+      "fpo:hasValue" : max(pressureDropMaxArray)
       }
       TillobArray.append(portData)
       TillobArray.append(pressureDropData)
 
       return TillobArray
-
-
 def TillobWaterPressureCalculation(component):
   inletPort ={}
   outletPort ={}
   
   for port in component["hasPort"]:
-    if port["flowDirection"] == "Out":
+    if port["hasFlowDirection"] == "Out":
       outletPort = port
       TillobArray = []
       pressureDropMaxArray = []
       for newPort in component["hasPort"]:
-        if newPort["flowDirection"] == "In":
+        if newPort["hasFlowDirection"] == "In":
           inletPort = newPort
           z11 = inletPort["hasFlowDirectionVectorZ"][0]
           z12 = inletPort["hasFlowDirectionVectorZ"][1]
@@ -478,11 +474,11 @@ def TillobWaterPressureCalculation(component):
 
           #PARRALEL PORT
           if z1 ==0 and z2 ==0 and z3 ==0:
-            q = outletPort["fpo:flowRate"]
-            q1= inletPort["fpo:flowRate"]
-            d = outletPort["fpo:outerDiameter"]
-            d1= inletPort["fpo:outerDiameter"]
-            v1 = inletPort["fpo:velocity"]
+            q = outletPort["fpo:hasFlowRate"]
+            q1= inletPort["fpo:hasFlowRate"]
+            d = outletPort["fpo:hasOuterDiameter"]
+            d1= inletPort["fpo:hasOuterDiameter"]
+            v1 = inletPort["fpo:hasVelocity"]
             
             if d1/d < 1:
               xp = [0.6, 0.8, 1]
@@ -494,7 +490,7 @@ def TillobWaterPressureCalculation(component):
               fp = [1.5, 0.5, 0]
               theta = np.interp(q1/q, xp, fp)
 
-            fluidTemperature = outletPort["fpo:temperature"] # *C
+            fluidTemperature = outletPort["fpo:hasTemperature"] # *C
             fluid_vapour = Fluid(PureFluids.Water)
             fluid_vapour.update(Input.Pressure.with_value(101325), Input.Temperature.with_value(273.15+fluidTemperature)) 
             density = fluid_vapour.density #kg/m3
@@ -504,11 +500,11 @@ def TillobWaterPressureCalculation(component):
            
           #ORTHOGONAL PORT
           if z1 !=0 or z2 !=0 or z3 !=0:
-            q = outletPort["fpo:flowRate"]
-            q2= inletPort["fpo:flowRate"]
-            d = outletPort["fpo:outerDiameter"]
-            d2= inletPort["fpo:outerDiameter"]
-            v2 = inletPort["fpo:velocity"]
+            q = outletPort["fpo:hasFlowRate"]
+            q2= inletPort["fpo:hasFlowRate"]
+            d = outletPort["fpo:hasOuterDiameter"]
+            d2= inletPort["fpo:hasOuterDiameter"]
+            v2 = inletPort["fpo:hasVelocity"]
             
             if round(d2/d,1) <= 0.3:
               xp = [0.1, 0.2, 0.3, 0.4, 0.5]
@@ -535,7 +531,7 @@ def TillobWaterPressureCalculation(component):
               fp = [-2, -2, -2 ,1.5 , 2]
               theta = np.interp(q2/q, xp, fp)
 
-            fluidTemperature = outletPort["fpo:temperature"] # *C
+            fluidTemperature = outletPort["fpo:hasTemperature"] # *C
             fluid_vapour = Fluid(PureFluids.Water)
             fluid_vapour.update(Input.Pressure.with_value(101325), Input.Temperature.with_value(273.15+fluidTemperature)) 
             density = fluid_vapour.density #kg/m3
@@ -547,39 +543,36 @@ def TillobWaterPressureCalculation(component):
       pressureDropID = "inst:"+str(uuid.uuid4())
       portData = {
       "@id" : outletPort["@id"],
-      "pressureDrop" : pressureDropID
+      "hasPressureDrop" : pressureDropID
       }
       pressureDropData={ 
         "@id" : pressureDropID,
-      "fpo:value" : max(pressureDropMaxArray)
+      "fpo:hasValue" : max(pressureDropMaxArray)
       }
       TillobArray.append(portData)
       TillobArray.append(pressureDropData)
 
       return TillobArray
-          
-
-
 def FordelingAirPressureCalculation(component):
   inletPort ={}
   outletPort ={}
   for port in component["hasPort"]:
-    if port["flowDirection"] == "In":
+    if port["hasFlowDirection"] == "In":
       inletPort = port
       FordelingArray = []
 
       for newPort in component["hasPort"]:
-        if newPort["flowDirection"] == "Out":
+        if newPort["hasFlowDirection"] == "Out":
           outletPort = newPort
-          v = inletPort["fpo:velocity"]
-          v2 = outletPort["fpo:velocity"]
+          v = inletPort["fpo:hasVelocity"]
+          v2 = outletPort["fpo:hasVelocity"]
 
           #Linnear interpolating theta
           xp = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
           fp = [22.50, 5.00, 2.08, 1.25, 1.10, 0.83, 0.61, 0.47, 0.37]
           theta = np.interp(v2/v, xp, fp)    
           
-          fluidTemperature = outletPort["fpo:temperature"] # *C
+          fluidTemperature = outletPort["fpo:hasTemperature"] # *C
           fluid_vapour = Fluid(PureFluids.Air)
           fluid_vapour.update(Input.Pressure.with_value(101325), Input.Temperature.with_value(273.15+fluidTemperature)) 
           density = fluid_vapour.density #kg/m3
@@ -588,37 +581,35 @@ def FordelingAirPressureCalculation(component):
           pressureDropID = "inst:"+str(uuid.uuid4())
           portData = {
           "@id" : outletPort["@id"],
-          "pressureDrop" : pressureDropID
+          "hasPressureDrop" : pressureDropID
           }
           pressureDropData={ 
             "@id" : pressureDropID,
-          "fpo:value" : pressureDropValue
+          "fpo:hasValue" : pressureDropValue
           }
           FordelingArray.append(portData)
           FordelingArray.append(pressureDropData)
       return FordelingArray
-
-
 def FordelingWaterPressureCalculation(component):
   inletPort ={}
   outletPort ={}
   for port in component["hasPort"]:
-    if port["flowDirection"] == "In":
+    if port["hasFlowDirection"] == "In":
       inletPort = port
       FordelingArray = []
 
       for newPort in component["hasPort"]:
-        if newPort["flowDirection"] == "Out":
+        if newPort["hasFlowDirection"] == "Out":
           outletPort = newPort
-          v = inletPort["fpo:velocity"]
-          v2 = outletPort["fpo:velocity"]
+          v = inletPort["fpo:hasVelocity"]
+          v2 = outletPort["fpo:hasVelocity"]
 
           #Linnear interpolating theta
           xp = [0.6, 1, 1.5, 2]
           fp = [3, 1.3, 0.8 , 0.5]
           theta = np.interp(v2/v, xp, fp)    
           
-          fluidTemperature = outletPort["fpo:temperature"] # *C
+          fluidTemperature = outletPort["fpo:hasTemperature"] # *C
           fluid_vapour = Fluid(PureFluids.Water)
           fluid_vapour.update(Input.Pressure.with_value(101325), Input.Temperature.with_value(273.15+fluidTemperature)) 
           density = fluid_vapour.density #kg/m3
@@ -627,26 +618,25 @@ def FordelingWaterPressureCalculation(component):
           pressureDropID = "inst:"+str(uuid.uuid4())
           portData = {
           "@id" : outletPort["@id"],
-          "pressureDrop" : pressureDropID
+          "hasPressureDrop" : pressureDropID
           }
           pressureDropData={ 
             "@id" : pressureDropID,
-          "fpo:value" : pressureDropValue
+          "fpo:hasValue" : pressureDropValue
           }
           FordelingArray.append(portData)
           FordelingArray.append(pressureDropData)
       return FordelingArray
-
 def AfgreningAirPressureCalculation(component):
   inletPort ={}
   outletPort ={}
   for port in component["hasPort"]:
-    if port["flowDirection"] == "In":
+    if port["hasFlowDirection"] == "In":
       inletPort = port
       AfgreningArray =[]
 
       for newPort in component["hasPort"]:
-        if newPort["flowDirection"] == "Out":
+        if newPort["hasFlowDirection"] == "Out":
           outletPort = newPort
           z11 = inletPort["hasFlowDirectionVectorZ"][0]
           z12 = inletPort["hasFlowDirectionVectorZ"][1]
@@ -659,11 +649,11 @@ def AfgreningAirPressureCalculation(component):
           z3 =z13 + z23
 
           if z1 ==0 and z2 ==0 and z3 ==0:
-            q = inletPort["fpo:flowRate"]
-            q1 = outletPort["fpo:flowRate"]
-            A = inletPort["fpo:crossSectionalArea"]
-            A1 = outletPort["fpo:crossSectionalArea"]
-            v1 = outletPort["fpo:velocity"]           
+            q = inletPort["fpo:hasFlowRate"]
+            q1 = outletPort["fpo:hasFlowRate"]
+            A = inletPort["fpo:hasCrossSectionalArea"]
+            A1 = outletPort["fpo:hasCrossSectionalArea"]
+            v1 = outletPort["fpo:hasVelocity"]           
            
             #Linnear interpolating theta
             if round(A1/A,1) <= 0.1:
@@ -711,7 +701,7 @@ def AfgreningAirPressureCalculation(component):
               fp = [7.02, 1.60, 0.80, 0.63, 0.63, 0.72, 0.85, 1.01, 1.20]
               theta = np.interp(q1/q, xp, fp)
 
-            fluidTemperature = outletPort["fpo:temperature"] # *C
+            fluidTemperature = outletPort["fpo:hasTemperature"] # *C
             fluid_vapour = Fluid(PureFluids.Air)
             fluid_vapour.update(Input.Pressure.with_value(101325), Input.Temperature.with_value(273.15+fluidTemperature)) 
             density = fluid_vapour.density #kg/m3
@@ -720,22 +710,22 @@ def AfgreningAirPressureCalculation(component):
             pressureDropID = "inst:"+str(uuid.uuid4())
             portData = {
             "@id" : outletPort["@id"],
-            "pressureDrop" : pressureDropID
+            "hasPressureDrop" : pressureDropID
             }
             pressureDropData={ 
               "@id" : pressureDropID,
-            "fpo:value" : pressureDropValue
+            "fpo:hasValue" : pressureDropValue
             }
             AfgreningArray.append(portData)
             AfgreningArray.append(pressureDropData)
 
             
           if z1 !=0 or z2 !=0 or z3 !=0:
-            q = inletPort["fpo:flowRate"]
-            q2 = outletPort["fpo:flowRate"]
-            A = inletPort["fpo:crossSectionalArea"]
-            A2 = outletPort["fpo:crossSectionalArea"]
-            v2 = outletPort["fpo:velocity"]           
+            q = inletPort["fpo:hasFlowRate"]
+            q2 = outletPort["fpo:hasFlowRate"]
+            A = inletPort["fpo:hasCrossSectionalArea"]
+            A2 = outletPort["fpo:hasCrossSectionalArea"]
+            v2 = outletPort["fpo:hasVelocity"]           
             #Linnear interpolating theta
             if round(A2/A,1) <= 0.1:
               xp = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
@@ -782,7 +772,7 @@ def AfgreningAirPressureCalculation(component):
               fp = [0.34, 0.34, 0.34, 0.34, 0.15, 0.15, 0.14, 0.14, 0.13]
               theta = np.interp(q2/q, xp, fp)
     
-            fluidTemperature = outletPort["fpo:temperature"] # *C
+            fluidTemperature = outletPort["fpo:hasTemperature"] # *C
             fluid_vapour = Fluid(PureFluids.Air)
             fluid_vapour.update(Input.Pressure.with_value(101325), Input.Temperature.with_value(273.15+fluidTemperature)) 
             density = fluid_vapour.density #kg/m3
@@ -791,31 +781,27 @@ def AfgreningAirPressureCalculation(component):
             pressureDropID = "inst:"+str(uuid.uuid4())
             portData = {
             "@id" : outletPort["@id"],
-            "pressureDrop" : pressureDropID
+            "hasPressureDrop" : pressureDropID
             }
             pressureDropData={ 
               "@id" : pressureDropID,
-            "fpo:value" : pressureDropValue
+            "fpo:hasValue" : pressureDropValue
             }
             AfgreningArray.append(portData)
             AfgreningArray.append(pressureDropData)
 
 
       return AfgreningArray
-
-
-
-
 def AfgreningWaterPressureCalculation(component):
   inletPort ={}
   outletPort ={}
   for port in component["hasPort"]:
-    if port["flowDirection"] == "In":
+    if port["hasFlowDirection"] == "In":
       inletPort = port
       AfgreningArray =[]
 
       for newPort in component["hasPort"]:
-        if newPort["flowDirection"] == "Out":
+        if newPort["hasFlowDirection"] == "Out":
           outletPort = newPort
           z11 = inletPort["hasFlowDirectionVectorZ"][0]
           z12 = inletPort["hasFlowDirectionVectorZ"][1]
@@ -828,14 +814,14 @@ def AfgreningWaterPressureCalculation(component):
           z3 =z13 + z23
 
           if z1 ==0 and z2 ==0 and z3 ==0:
-            v = inletPort["fpo:velocity"]
-            v1 = outletPort["fpo:velocity"]
+            v = inletPort["fpo:hasVelocity"]
+            v1 = outletPort["fpo:hasVelocity"]
            
             #Linnear interpolating theta
             xp = [0.5, 1]
             fp = [1, 0]
             theta = np.interp(v1/v, xp, fp)
-            fluidTemperature = outletPort["fpo:temperature"] # *C
+            fluidTemperature = outletPort["fpo:hasTemperature"] # *C
             fluid_vapour = Fluid(PureFluids.Water)
             fluid_vapour.update(Input.Pressure.with_value(101325), Input.Temperature.with_value(273.15+fluidTemperature)) 
             density = fluid_vapour.density #kg/m3
@@ -844,25 +830,25 @@ def AfgreningWaterPressureCalculation(component):
             pressureDropID = "inst:"+str(uuid.uuid4())
             portData = {
             "@id" : outletPort["@id"],
-            "pressureDrop" : pressureDropID
+            "hasPressureDrop" : pressureDropID
             }
             pressureDropData={ 
               "@id" : pressureDropID,
-            "fpo:value" : pressureDropValue
+            "fpo:hasValue" : pressureDropValue
             }
             AfgreningArray.append(portData)
             AfgreningArray.append(pressureDropData)
 
             
           if z1 !=0 or z2 !=0 or z3 !=0:
-            v = inletPort["fpo:velocity"]
-            v2 = outletPort["fpo:velocity"]
+            v = inletPort["fpo:hasVelocity"]
+            v2 = outletPort["fpo:hasVelocity"]
                         
             #Linnear interpolating theta
             xp = [0.4, 0.6, 0.8, 1, 2]
             fp = [7, 3.5, 2.5 , 2, 1]
             theta = np.interp(v2/v, xp, fp)        
-            fluidTemperature = outletPort["fpo:temperature"] # *C
+            fluidTemperature = outletPort["fpo:hasTemperature"] # *C
             fluid_vapour = Fluid(PureFluids.Water)
             fluid_vapour.update(Input.Pressure.with_value(101325), Input.Temperature.with_value(273.15+fluidTemperature)) 
             density = fluid_vapour.density #kg/m3
@@ -871,11 +857,11 @@ def AfgreningWaterPressureCalculation(component):
             pressureDropID = "inst:"+str(uuid.uuid4())
             portData = {
             "@id" : outletPort["@id"],
-            "pressureDrop" : pressureDropID
+            "hasPressureDrop" : pressureDropID
             }
             pressureDropData={ 
               "@id" : pressureDropID,
-            "fpo:value" : pressureDropValue
+            "fpo:hasValue" : pressureDropValue
             }
             AfgreningArray.append(portData)
             AfgreningArray.append(pressureDropData)
@@ -910,11 +896,11 @@ def TransitionFluids(id, temperature, fluidType, velocity, outletDiameter,inletD
     pressureDropID = "inst:"+str(uuid.uuid4())
     TransitionData = {
     "@id" : id,
-    "pressureDrop" : pressureDropID
+    "hasPressureDrop" : pressureDropID
     }
     pressureDropData={ 
       "@id" : pressureDropID,
-    "fpo:value" : pressureDropValue
+    "fpo:hasValue" : pressureDropValue
     }
     TransitionArray.append(TransitionData)
     TransitionArray.append(pressureDropData)
@@ -943,11 +929,11 @@ def ElbowFluids(id, temperature, fluidType, angle, rough, velocity, diameter):
     pressureDropID = "inst:"+str(uuid.uuid4())
     ElbowData = {
     "@id" : id,
-    "pressureDrop" : pressureDropID
+    "hasPressureDrop" : pressureDropID
     }
     pressureDropData={ 
       "@id" : pressureDropID,
-    "fpo:value" : pressureDropValue
+    "fpo:hasValue" : pressureDropValue
     }
     ElbowArray.append(ElbowData)
     ElbowArray.append(pressureDropData)
@@ -980,11 +966,11 @@ def pipeFluids(id, temperature, fluidType, length, rough, velocity, diameter):
     pressureDropID = "inst:"+str(uuid.uuid4())
     PipeData = {
     "@id" : id,
-    "pressureDrop" : pressureDropID
+    "hasPressureDrop" : pressureDropID
     }
     pressureDropData={ 
       "@id" : pressureDropID,
-    "fpo:value" : pressureDropValue
+    "fpo:hasValue" : pressureDropValue
     }
     PipeArray.append(PipeData)
     PipeArray.append(pressureDropData)
