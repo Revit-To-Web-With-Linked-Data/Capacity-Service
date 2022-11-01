@@ -1,8 +1,5 @@
-from textwrap import indent
 import fluids
-from rdflib import Graph, RDF, Namespace
 from pyfluids import Fluid, PureFluids, Input
-import json
 import math
 import uuid
 import numpy as np
@@ -110,7 +107,6 @@ def tees(graph):
 
 
 def pipes(graph): 
-  print(graph)
   ###Extracting data at component level and send it to fluid component
   distributionComponents ={
   "@graph" : [ ],
@@ -138,19 +134,19 @@ def pipes(graph):
   for item1 in graph['@graph']:
     # print(item1['@type'])
   #Calculate pressure drop for each pipe and duct and add it to object
-    if (item1['@type'] =='Pipe' or item1['@type'] =='fso:Duct'):
+    if (item1['@type'] =='fso:Pipe' or item1['@type'] =='fso:Duct'):
         result=pipeFluids(item1["@id"], item1["fpo:hasTemperature"], item1["hasFlowType"], item1["fpo:hasLength"], item1["fpo:hasRoughness"], item1["fpo:hasVelocity"], item1["fpo:hasOuterDiameter"])
 
         distributionComponents["@graph"].extend(result)
   
   # Calculate pressure drop for each elbow and add it to object
-    if (item1['@type'] =='Elbow'):
+    if (item1['@type'] =='fso:Elbow'):
         result=ElbowFluids(item1["@id"], item1["fpo:hasTemperature"], item1["hasFlowType"], item1["fpo:hasAngle"], item1["fpo:hasRoughness"], item1["fpo:hasVelocity"], item1["fpo:hasOuterDiameter"])
 
         distributionComponents["@graph"].extend(result)
 
   #Calculate pressure drop for each transition and add it to object
-    if (item1['@type'] =='Transition'):
+    if (item1['@type'] =='fso:Transition'):
         result=TransitionFluids(item1["@id"], item1["fpo:hasTemperature"], item1["hasFlowType"], item1["fpo:hasVelocity"], item1["fpo:hasOuterDiameter"],item1["fpo:hasInnerDiameter"], item1["hasSystem"], item1["fpo:hasLength"])
 
         distributionComponents["@graph"].extend(result)
